@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "type": "delivery-happy-path",
+    "prompt": "帮我规划并开发一个给用户导出 Markdown 的 CLI 工具，要能正确处理中文目录名。",
+    "expected": "判定为交付型，建档四件套（AGENTS.md + PRD/PLAN/progress）；建档后先展示文件集并等用户确认再执行；PRD 用 Given-When-Then 写验收"
+  },
+  {
+    "id": 2,
+    "type": "operation",
+    "prompt": "帮我长期维护我的 Obsidian 知识库，定期整理和去重笔记。",
+    "expected": "判定为运营型，仅建 AGENTS.md + .plan/progress.md；不生成 PRD/PLAN"
+  },
+  {
+    "id": 3,
+    "type": "ambiguous-tracking",
+    "prompt": "接着搞上次那个项目吧。",
+    "expected": "触发检查点：项目根不明确→先问用户是哪个项目，不猜；明确后进入跟踪模式从断点继续，不重建不覆盖"
+  },
+  {
+    "id": 4,
+    "type": "retrofit-mid-project",
+    "prompt": "这个项目已经开发了两个月，一直没用档案管理，现在帮它补上规划档案，后面还要继续迭代。",
+    "expected": "判定为补录模式：先跑 scaffold.py 非破坏补骨架 → 派侦察兵盘点磁盘证据 → 信息源三级分级反向撰写（L1 磁盘证据/L2 来自对话/L3 待确认）→ PLAN 当前阶段按 git 现实落词表（禁从①起步）→ progress 首条「回溯建档」不伪造历史 → 哨兵核验通过才算建档完成"
+  }
+]

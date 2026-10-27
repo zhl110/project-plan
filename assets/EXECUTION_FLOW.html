@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>project-plan 执行链路图</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --ink:#1f2933; --muted:#64748b;
+    --line:#cbd5e1; --border:#e2e8f0;
+    --amber:#f59e0b; --green:#10b981; --blue:#3b82f6;
+    --purple:#8b5cf6; --orange:#f97316; --red:#ef4444;
+    --shadow:0 1px 3px rgba(15,23,42,.08),0 8px 24px rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.6;
+  }
+  header{
+    background:linear-gradient(135deg,#1e293b,#334155);
+    color:#fff; padding:28px 32px; box-shadow:var(--shadow);
+  }
+  header h1{margin:0;font-size:22px;letter-spacing:.5px}
+  header p{margin:6px 0 0;color:#cbd5e1;font-size:13px}
+  nav{
+    position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+    padding:10px 24px; display:flex; gap:14px; flex-wrap:wrap; font-size:13px;
+  }
+  nav a{color:var(--muted);text-decoration:none;padding:4px 10px;border-radius:8px;transition:.15s}
+  nav a:hover{background:#eef2f7;color:var(--ink)}
+  main{max-width:1040px;margin:0 auto;padding:28px 24px 80px}
+  section{margin:0 0 40px;scroll-margin-top:64px}
+  h2{font-size:18px;border-left:4px solid var(--purple);padding-left:12px;margin:0 0 16px}
+  h3{font-size:15px;color:var(--muted);margin:18px 0 8px}
+  .flow-wrap{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:18px;box-shadow:var(--shadow);overflow:auto;
+  }
+  svg{display:block;max-width:100%;height:auto;margin:0 auto}
+  .node{cursor:pointer;transition:.15s}
+  .node:hover{filter:brightness(.97)}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 2px 0;font-size:12.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:18px;box-shadow:var(--shadow);
+  }
+  .card h3{margin-top:0;color:var(--ink);font-size:15px;display:flex;align-items:center;gap:8px}
+  .card ol,.card ul{margin:8px 0 0;padding-left:20px;font-size:13.5px;color:#334155}
+  .card li{margin:4px 0}
+  .tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+  .t-green{background:var(--green)} .t-blue{background:var(--blue)}
+  .t-amber{background:var(--amber)} .t-purple{background:var(--purple)}
+  .t-orange{background:var(--orange)} .t-red{background:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);
+    border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  th{background:#f1f5f9;font-weight:600;color:#334155}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:6px;background:#eef2f7;color:#475569}
+  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:12px;color:#be123c}
+  .loop{background:#faf5ff;border:1px dashed var(--purple);border-radius:12px;padding:14px 16px;font-size:13.5px}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+  a.anchor{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>project-plan · 执行链路图</h1>
+  <p>单一规划 skill 的规则执行流程 — 依据 SKILL.md v2.5.0 绘制 · 点击图中节点可跳转对应说明</p>
+</header>
+
+<nav>
+  <a href="#master">① 总执行链路</a>
+  <a href="#modes">② 三种模式</a>
+  <a href="#complexity">③ 复杂度分级</a>
+  <a href="#selfcheck">④ 预执行自检</a>
+  <a href="#lifecycle">⑤ 生命周期阶段</a>
+  <a href="#sync">⑥ 变更同步</a>
+  <a href="#loop">⑦ 执行循环详图</a>
+  <a href="#discipline">⑧ 关键纪律</a>
+</nav>
+
+<main>
+
+<!-- ========== ① 总执行链路 ========== -->
+<section id="master">
+  <h2>① 总执行链路（Master Flow）</h2>
+  <div class="flow-wrap">
+    <svg viewBox="0 0 920 1390" role="img" aria-label="执行链路流程图">
+      <defs>
+        <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+        <style>
+          .box{rx:12;stroke-width:2;fill:#fff}
+          .lbl{font:600 14px sans-serif;fill:#1f2933;text-anchor:middle}
+          .sub{font:12px sans-serif;fill:#64748b;text-anchor:middle}
+          .dia{stroke-width:2;fill:#fff7ed}
+        </style>
+      </defs>
+
+      <!-- 1 收到需求 -->
+      <g class="node" onclick="scrollTo('modes')">
+        <rect class="box" x="350" y="30" width="220" height="52" rx="26" fill="#eef2ff" stroke="#a5b4fc"/>
+        <text class="lbl" x="460" y="52">📥 收到需求</text>
+        <text class="sub" x="460" y="70">用户给出任务描述</text>
+      </g>
+      <path d="M460,82 V108" stroke="#64748b" marker-end="url(#ar)"/>
+
+      <!-- 决策1 简单任务? -->
+      <g class="node" onclick="scrollTo('master')">
+        <polygon class="dia" points="460,118 590,158 460,198 330,158" stroke="#f59e0b"/>
+        <text class="lbl" x="460" y="154">一步到位的</text>
+        <text class="lbl" x="460" y="172">简单任务？</text>
+      </g>
+      <!-- 是 → 直接做 -->
+      <path d="M590,158 H760" stroke="#64748b" marker-end="url(#ar)"/>
+      <rect class="box" x="760" y="136" width="140" height="44" rx="10" fill="#f0fdf4" stroke="#86efac"/>
+      <text class="sub" x="830" y="163">是 → 直接做</text>
+      <!-- 否 ↓ -->
+      <path d="M460,198 V232" stroke="#64748b" marker-end="url(#ar)"/>
+      <text class="sub" x="500" y="220" text-anchor="start">否</text>
+
+      <!-- 项目性质评估（文件集裁剪） -->
+      <g class="node" onclick="scrollTo('modes')">
+        <polygon class="dia" points="460,232 590,276 460,320 330,276" stroke="#f59e0b"/>
+        <text class="lbl" x="460" y="272">🧭 项目性质评估</text>
+        <text class="lbl" x="460" y="290">交付型 / 运营型？</text>
+      </g>
+      <!-- 运营型 → 仅 AGENTS + progress -->
+      <path d="M330,276 H210" stroke="#64748b" marker-end="url(#ar)"/>
+      <text class="sub" x="270" y="262" text-anchor="end">运营型</text>
+      <rect class="box" x="40" y="254" width="170" height="46" rx="10" fill="#fffbeb" stroke="#fcd34d"/>
+      <text class="sub" x="125" y="272">仅 AGENTS.md</text>
+      <text class="sub" x="125" y="290">+ progress.md</text>
+      <!-- 交付型 ↓ -->
+      <path d="M460,320 V352" stroke="#64748b" marker-end="url(#ar)"/>
+      <text class="sub" x="500" y="340" text-anchor="start">交付型</text>
+
+      <!-- 决策2 已有完整档案? -->
+      <g class="node" onclick="scrollTo('modes')">
+        <polygon class="dia" points="460,352 600,396 460,440 320,396" stroke="#f59e0b"/>
+        <text class="lbl" x="460" y="392">已有完整档案</text>
+        <text class="lbl" x="460" y="410">AGENTS + .plan/ ?</text>
+      </g>
+      <!-- 是 → 跟踪模式（右） -->
+      <path d="M600,396 H710" stroke="#64748b" marker-end="url(#ar)"/>
+      <text class="sub" x="655" y="382" text-anchor="start">是</text>
+      <!-- 否 ↓ -->
+      <path d="M460,440 V470" stroke="#64748b" marker-end="url(#ar)"/>
+      <text class="sub" x="474" y="462" text-anchor="start">否</text>
+
+      <!-- 决策2b 项目已开工? -->
+      <g class="node" onclick="scrollTo('modes')">
+        <polygon class="dia" points="460,470 590,510 460,550 330,510" stroke="#f59e0b"/>
+        <text class="lbl" x="460" y="506">项目已开工？</text>
+        <text class="lbl" x="460" y="524">有代码/git/空模板?</text>
+      </g>
+      <!-- 是 → 补录模式（左） -->
+      <path d="M330,510 H155 V580" stroke="#64748b" fill="none" marker-end="url(#ar)"/>
+      <text class="sub" x="240" y="498" text-anchor="middle">是</text>
+      <!-- 否 ↓ → 创建模式 -->
+      <path d="M460,550 V580" stroke="#64748b" marker-end="url(#ar)"/>
+      <text class="sub" x="474" y="572" text-anchor="start">否</text>
+
+      <!-- 补录模式盒（左） -->
+      <g class="node" onclick="scrollTo('modes')">
+        <rect class="box" x="40" y="580" width="230" height="170" rx="12" fill="#fff7ed" stroke="#f97316"/>
+        <text class="lbl" x="155" y="606" fill="#c2410c">🟠 补录模式</text>
+        <text class="sub" x="155" y="630">1. 派侦察兵盘点磁盘证据</text>
+        <text class="sub" x="155" y="650">2. 反向撰写（来源分级）</text>
+        <text class="sub" x="155" y="670">   L1证据/L2已知/L3待确认</text>
+        <text class="sub" x="155" y="690">3. progress 首条「回溯建档」</text>
+        <text class="sub" x="155" y="710">4. 不伪造历史</text>
+        <text class="sub" x="155" y="734">→ 必过哨兵核验</text>
+      </g>
+      <!-- 创建模式盒（中） -->
+      <g class="node" onclick="scrollTo('modes')">
+        <rect class="box" x="350" y="580" width="220" height="170" rx="12" fill="#ecfdf5" stroke="#10b981"/>
+        <text class="lbl" x="460" y="606" fill="#047857">🟢 创建模式</text>
+        <text class="sub" x="460" y="630">1. AGENTS.md（不覆盖）</text>
+        <text class="sub" x="460" y="650">2. 建 .plan/ 三件套</text>
+        <text class="sub" x="460" y="670">3. 确认需求→填 PRD</text>
+        <text class="sub" x="460" y="690">4. 填 PLAN+自检</text>
+        <text class="sub" x="460" y="710">5. 填 progress 上下文</text>
+        <text class="sub" x="460" y="734">→ 必过哨兵核验</text>
+      </g>
+      <!-- 跟踪模式盒（右） -->
+      <g class="node" onclick="scrollTo('modes')">
+        <rect class="box" x="650" y="430" width="230" height="130" rx="12" fill="#eff6ff" stroke="#3b82f6"/>
+        <text class="lbl" x="765" y="456" fill="#1d4ed8">🔵 跟踪模式</text>
+        <text class="sub" x="765" y="480">1. 读 AGENTS→PLAN→progress</text>
+        <text class="sub" x="765" y="500">2. 从交接断点继续</text>
+        <text class="sub" x="765" y="520">3. 每动作更新 PLAN+progress</text>
+        <text class="sub" x="765" y="546">（已有档案，不重建）</text>
+      </g>
+
+      <!-- 创建/补录汇聚 → 复杂度分级；跟踪模式直连执行循环（已有档案，不重跑建档流程） -->
+      <path d="M155,750 C185,805 290,822 350,827" stroke="#64748b" fill="none" marker-end="url(#ar)"/>
+      <path d="M460,750 V800" stroke="#64748b" marker-end="url(#ar)"/>
+      <path d="M765,560 C765,900 720,1130 672,1205" stroke="#3b82f6" fill="none" marker-end="url(#ar)"/>
+      <text class="sub" x="778" y="900" text-anchor="start" fill="#1d4ed8">直进执行循环</text>
+
+      <!-- 复杂度分级 -->
+      <g class="node" onclick="scrollTo('complexity')">
+        <rect class="box" x="350" y="800" width="220" height="50" rx="12" fill="#fffbeb" stroke="#fcd34d"/>
+        <text class="lbl" x="460" y="822">📊 复杂度分级</text>
+        <text class="sub" x="460" y="840">S / M / L / XL</text>
+      </g>
+      <path d="M460,850 V886" stroke="#64748b" marker-end="url(#ar)"/>
+
+      <!-- 预执行自检 -->
+      <g class="node" onclick="scrollTo('selfcheck')">
+        <rect class="box" x="340" y="886" width="240" height="50" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+        <text class="lbl" x="460" y="908">🔍 预执行自检清单</text>
+        <text class="sub" x="460" y="926">9 维 · M/L/XL 必过</text>
+      </g>
+      <!-- FAIL CRITICAL → 不执行 -->
+      <path d="M340,911 H210" stroke="#ef4444" marker-end="url(#ar)"/>
+      <rect class="box" x="60" y="889" width="150" height="44" rx="10" fill="#fef2f2" stroke="#fca5a5"/>
+      <text class="sub" x="135" y="914" fill="#b91c1c">有 CRITICAL 未解</text>
+      <text class="lbl" x="135" y="922" fill="#b91c1c" font-size="11">→ 不执行</text>
+      <!-- pass ↓ -->
+      <path d="M460,936 V972" stroke="#64748b" marker-end="url(#ar)"/>
+
+      <!-- 哨兵核验（建档/补录后必过） -->
+      <g class="node" onclick="scrollTo('modes')">
+        <rect class="box" x="330" y="972" width="260" height="64" rx="12" fill="#fdf4ff" stroke="#a855f7"/>
+        <text class="lbl" x="460" y="994" fill="#7e22ce">🛡️ 哨兵核验（建档/补录必过）</text>
+        <text class="sub" x="460" y="1014">独立只读子 agent 对照合格标准</text>
+        <text class="sub" x="460" y="1030">查结构 / 状态真实 / 无编造</text>
+      </g>
+      <!-- 未达标自环 → 补齐后重过哨兵 -->
+      <path d="M330,1022 C250,1030 250,990 328,998" stroke="#a855f7" fill="none" marker-end="url(#ar)"/>
+      <text class="sub" x="243" y="1054" text-anchor="middle" fill="#7e22ce">未达标→补齐→复检(≤2轮)</text>
+      <!-- pass ↓ -->
+      <path d="M460,1036 V1072" stroke="#64748b" marker-end="url(#ar)"/>
+
+      <!-- 用户确认 -->
+      <g class="node">
+        <rect class="box" x="350" y="1072" width="220" height="48" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+        <text class="lbl" x="460" y="1101">✅ 展示计划·用户确认</text>
+      </g>
+      <path d="M460,1120 V1156" stroke="#64748b" marker-end="url(#ar)"/>
+
+      <!-- 执行循环 -->
+      <g class="node" onclick="scrollTo('loop')">
+        <rect x="250" y="1156" width="420" height="120" rx="14" fill="#faf5ff" stroke="#8b5cf6" stroke-width="2"/>
+        <text class="lbl" x="460" y="1182" fill="#7c3aed">🔁 执行循环</text>
+        <text class="sub" x="460" y="1206">动作 → 更新 PLAN / 追加 progress</text>
+        <text class="sub" x="460" y="1226">→ 含：问题/解决 · 撤销 · 规则写回</text>
+        <text class="sub" x="460" y="1246">→ 变更同步 · 待施任务队列</text>
+        <!-- 回环箭头 -->
+        <path d="M250,1216 C200,1216 200,1176 250,1176" stroke="#8b5cf6" fill="none" marker-end="url(#ar)"/>
+      </g>
+
+      <!-- 收工 -->
+      <path d="M460,1276 V1312" stroke="#64748b" marker-end="url(#ar)"/>
+      <g class="node">
+        <rect class="box" x="350" y="1312" width="220" height="54" rx="12" fill="#f0fdf4" stroke="#86efac"/>
+        <text class="lbl" x="460" y="1334">🏁 收工</text>
+        <text class="sub" x="460" y="1352">PLAN 置完成 · progress 标 [收工]</text>
+      </g>
+    </svg>
+
+    <div class="legend">
+      <span><i class="dot" style="background:var(--amber)"></i>决策分支</span>
+      <span><i class="dot" style="background:var(--green)"></i>创建模式</span>
+      <span><i class="dot" style="background:var(--orange)"></i>补录模式</span>
+      <span><i class="dot" style="background:var(--blue)"></i>跟踪模式</span>
+      <span><i class="dot" style="background:#a855f7"></i>哨兵核验</span>
+      <span><i class="dot" style="background:var(--purple)"></i>执行循环</span>
+      <span><i class="dot" style="background:var(--red)"></i>阻断（不执行）</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ② 两种模式 ========== -->
+<section id="modes">
+  <h2>② 三种建档模式（决策②③的分支）</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>🟢 创建模式 <span class="tag t-green">全新项目</span></h3>
+      <ol>
+        <li>项目根放 <code>AGENTS.md</code> — <b>仅当根不存在时创建</b>；已存在则跳过并报告路径，<b>绝不覆盖</b>。</li>
+        <li>根下建 <code>.plan/</code>，放入 <code>PRD.md / PLAN.md / progress.md</code>（从 templates 复制骨架）。</li>
+        <li>与用户确认需求后填 PRD（背景/目标/需求/验收）。</li>
+        <li>填 PLAN（阶段/步骤/决策/验证/风险），并跑一次「预执行自检清单」。</li>
+        <li>填 progress 的元信息 + 上下文压缩。</li>
+        <li>展示计划，<b>用户确认后再执行</b>。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>🟠 补录模式 <span class="tag t-orange">已开工缺档案</span></h3>
+      <ol>
+        <li><b>触发</b>：项目根有代码 / 产物 / git 历史，但无档案；或档案是空模板。档案是<b>反向侦查出来的，不是模板填出来的</b>。</li>
+        <li>派<b>侦察兵子 agent</b>（只读）盘点磁盘证据：git log、目录结构、依赖清单、文档 → 证据清单 + L1/L3 分类。</li>
+        <li><b>信息源分级</b>：L1 磁盘证据可直接写；L2 agent 已知（标「来自对话」）；L3 推不出标「待确认」，禁编造。</li>
+        <li>PLAN 当前阶段标<b>真实状态</b>（回溯标记）；progress 首条写「回溯建档」，<b>不伪造历史</b>。</li>
+        <li>完成后<b>必过哨兵核验</b> → 展示差异清单待用户确认。</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>🔵 跟踪模式 <span class="tag t-blue">已有档案</span></h3>
+      <ol>
+        <li>读 <code>AGENTS.md</code> → 读 <code>.plan/PLAN.md</code> → 读 <code>.plan/progress.md</code>（含上下文压缩与交接上下文）。</li>
+        <li>从交接上下文的<b>断点</b>继续。</li>
+        <li>每完成一个动作/阶段，按纪律更新 PLAN 状态与 progress。</li>
+      </ol>
+      <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0">已有档案则<b>不重建</b>，直接接手，从 progress 的「交接上下文」知道做到哪。哨兵不强制，改哪补哪、对照合格标准自检。</p>
+    </div>
+  </div>
+  <div class="loop" style="margin-top:18px">
+    <p style="margin:0 0 8px"><b>🛡️ 哨兵核验（创建 / 补录建档后必过）</b>：派独立只读子 agent 按各文件「合格标准」核验——①结构与必填段齐全 ②状态真实（PLAN 当前阶段 vs 项目现实）③无编造（progress 无伪造历史；标 L1 的内容抽查与磁盘对得上）④红线合规。未达标 → 列清单补齐 → 复检（最多 2 轮，仍未过停手交用户裁决），<b>通过才算建档完成</b>；结论（PASS / 未达标清单）记入 progress 留痕；通过后才向用户展示确认。主 agent 自查自评不算数——自己建的档自己验必放水，与 DARWIN 自评偏差同源。<b>S 级项目豁免</b>（≤3 文件，对照合格标准自检即可）。哨兵提示词须附合格标准原文或让子 agent 自读 generate-files.md。</p>
+  </div>
+  <div class="loop" style="margin-top:14px">
+    <p style="margin:0 0 8px"><b>🧭 文件集裁剪（项目性质评估结论）</b>：建档前先判定项目类型，决定生成哪些文件，不无脑四件套。</p>
+    <ul style="margin:0;padding-left:20px;font-size:13.5px;color:#334155">
+      <li><b>交付型 delivery</b>：有明确定义产物 + 验收 + 可收敛路径 → 生成四件套（AGENTS + PRD + PLAN + progress）。</li>
+      <li><b>运营型 operation</b>：长期、开放式、无单一交付物（如长期任务项目）→ 仅 <code>AGENTS.md</code> + <code>.plan/progress.md</code>，<b>不生成 PRD/PLAN</b>。</li>
+      <li>类型可单向升级：运营型后期长出交付需求，执行 <code>scaffold.py --type delivery</code> 只补 PRD/PLAN，不覆盖已有 AGENTS/progress。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== ③ 复杂度分级 ========== -->
+<section id="complexity">
+  <h2>③ 复杂度分级（决定 PLAN 粒度）</h2>
+  <table>
+    <thead><tr><th>级别</th><th>标准</th><th>PLAN 写法</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill">S</span></td><td>≤3 文件，单领域，无外部依赖</td><td>直接列步骤，不必拆阶段</td></tr>
+      <tr><td><span class="pill">M</span></td><td>4–15 文件，1–2 领域，有依赖</td><td>按阶段拆，每阶段列步骤</td></tr>
+      <tr><td><span class="pill">L</span></td><td>16+ 文件，多领域/多模块</td><td>9 阶段全走，每阶段详细子步骤</td></tr>
+      <tr><td><span class="pill">XL</span></td><td>跨系统、长期</td><td>L + 每阶段独立评审门禁</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px">判断不准时取更高一级。S 级可略过预执行自检；M/L/XL 必须全过。</p>
+</section>
+
+<!-- ========== ④ 预执行自检 ========== -->
+<section id="selfcheck">
+  <h2>④ 预执行自检清单（PLAN 定稿前过一遍）</h2>
+  <div class="card">
+    <p style="margin:0 0 8px;font-size:13.5px;color:#334155">建档后、动手前按复杂度跑自检，<b>FAIL 项修完再执行</b>。任一 <span class="tag t-red">CRITICAL</span>（安全违规 / 无备份 / 新代码不可达）未解 → <b>不执行</b>。</p>
+    <ul>
+      <li><b>完整性</b>：目标可测、阶段有序不重叠、每阶段有验收标准、无 TBD 阻塞项</li>
+      <li><b>可行性</b>：时长与工作量匹配（S≤2h / M≤6h / L≤16h / XL>16h）、依赖与假设已写明、用现成工具不重造</li>
+      <li><b>风险</b>：无 AGENTS.md 安全违规（rm -rf / --force / 泄密）、无单点阻塞、改前已备份</li>
+      <li><b>修改安全</b>（改既有文件时必查）：原文件已备份、有回滚路径、调用方已同步、有验证步骤</li>
+      <li><b>死代码</b>（加新代码时必查）：新函数/模块能追溯到调用点、配置项已接进 loader、路由/CLI 已注册</li>
+      <li><b>可验证</b>：每阶段有显式 pass/fail 准则、有冒烟测试、回滚可验证</li>
+      <li><b>依赖</b>：步骤顺序正确（无步骤读后步产物）、并行分支真独立、无同一文件并发冲突</li>
+      <li><b>对齐</b>：解决的是用户真实意图、尊重 AGENTS.md、不超出既定目标（scope creep）</li>
+      <li><b>文档</b>：API/配置变更有记录、用户可见变更有说明</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== ⑤ 生命周期阶段 ========== -->
+<section id="lifecycle">
+  <h2>⑤ 生命周期阶段模型（PLAN 的阶段词汇表）</h2>
+  <div class="flow-wrap" style="padding:20px">
+    <svg viewBox="0 0 900 90" style="max-width:100%">
+      <defs><marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8b5cf6"/></marker></defs>
+      <!-- 9 阶段横向 -->
+      <g font-size="12.5" text-anchor="middle" fill="#1f2933">
+        <!-- 阶段框 -->
+        <g>
+          <rect x="0"   y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="42"  y="45">① 需求定义</text>
+          <rect x="100" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="142" y="45">② 架构设计</text>
+          <rect x="200" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="242" y="45">③ 任务规划</text>
+          <rect x="300" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="342" y="45">④ 环境搭建</text>
+          <rect x="400" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="442" y="45">⑤ 编码实现</text>
+          <rect x="500" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="542" y="45">⑥ 审查精修</text>
+          <rect x="600" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="642" y="45">⑦ 安全审计</text>
+          <rect x="700" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="742" y="45">⑧ 部署上线</text>
+          <rect x="800" y="20" width="84" height="40" rx="9" fill="#ede9fe" stroke="#c4b5fd"/><text x="842" y="45">⑨ 交接维护</text>
+        </g>
+        <!-- 箭头 -->
+        <g stroke="#8b5cf6" marker-end="url(#a2)">
+          <path d="M84,40 H100"/><path d="M184,40 H200"/><path d="M284,40 H300"/>
+          <path d="M384,40 H400"/><path d="M484,40 H500"/><path d="M584,40 H600"/>
+          <path d="M684,40 H700"/><path d="M784,40 H800"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <div class="grid" style="margin-top:16px">
+    <div class="card"><h3>阶段裁剪</h3>
+      <ul>
+        <li><b>S 级</b>：①→⑤→⑥→⑨（精简）</li>
+        <li><b>M 级</b>：全流程精简</li>
+        <li><b>L / XL</b>：全流程 + 每阶段详细子步骤与评审门禁</li>
+      </ul>
+    </div>
+    <div class="card"><h3>交叉关注点（贯穿全程）</h3>
+      <ul>
+        <li>每阶段对应一次 git commit</li>
+        <li>改关键文件前备份</li>
+        <li>踩坑即记入项目笔记</li>
+        <li>进度可见；中断在 progress 标断点</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ⑥ 变更同步 ========== -->
+<section id="sync">
+  <h2>⑥ 变更同步（PRD ↔ PLAN ↔ progress）</h2>
+  <div class="loop">
+    <p style="margin:0 0 8px"><b>执行循环中的同步规则：</b>任一处变更，按规则联动另两端，<u>不允许只改一处</u>。</p>
+    <ol style="margin:0;padding-left:20px;font-size:13.5px;color:#334155">
+      <li><b>PRD 变了</b> → 先改 PRD 并在其「变更记录」留痕（改了什么 + 为什么）。</li>
+      <li><b>PLAN 跟着变（顺流）</b>：新增需求→PLAN 加任务；删除需求→任务标 <code>cancelled</code>（不物理删）；验收变→PLAN 验证表同步；约束变→关键决策同步。</li>
+      <li><b>progress 必追加</b>：每次变更在 progress 写「变更：PRD 改 X；PLAN 相应 Y；原因 Z」。</li>
+      <li><b>反向也管</b>：执行中发现 PRD 不可行/遗漏，先回头改 PRD 再同步 PLAN，<b>不允许只改 PLAN 让 PRD 与实际脱节</b>（PRD 是单一真相源）。</li>
+      <li><b>三端可对照</b>：PRD 变更记录 / PLAN 变更记录 / progress 流水，靠日期+简述互对。</li>
+    </ol>
+  </div>
+  <h3>progress 的四大块（交接文档核心）</h3>
+  <div class="grid">
+    <div class="card"><h3><span class="tag t-purple">压缩</span> 任务上下文压缩</h3>
+      <ul><li>用户偏好</li><li>整体架构（相关部分）</li><li>关键文件索引</li><li>已确认的决策</li><li>环境/依赖</li></ul></div>
+    <div class="card"><h3><span class="tag t-purple">交接</span> 交接上下文</h3>
+      <ul><li>当前断点</li><li>已完成的内容</li><li>未完成的内容</li><li>关键发现/注意事项</li><li>下一步建议</li></ul></div>
+    <div class="card"><h3><span class="tag t-purple">动态</span> 动态调整</h3>
+      <ul><li>新增标 <code>[新增 时刻]</code></li><li>删除标 <code>[已删除 时刻] 原因</code></li><li>修改标 <code>[已修改 时刻] 原因</code></li><li>不物理删，留历史</li></ul></div>
+    <div class="card"><h3><span class="tag t-purple">日志</span> 变更日志</h3>
+      <ul><li><code>| 时间 | 操作 | 说明 |</code></li><li>创建 / 更新 / 新增</li><li>删除 / 暂停 / 恢复</li><li>变更（PRD↔PLAN）</li></ul></div>
+  </div>
+</section>
+
+<!-- ========== ⑦ 执行循环详图 ========== -->
+<section id="loop">
+  <h2>⑦ 执行循环详图（Agentic Loop）</h2>
+  <p style="font-size:13.5px;color:var(--muted);margin:0 0 14px">
+    总图里的「执行循环」展开后是一个 agent 化的回路：<b>规划 → 执行 → 遇问题则解决（失败/不安全则撤销回滚）→ 沉淀经验写回 AGENTS.md → 方案调整则回写 PRD/Plan → 从待施任务取下一个</b>。下方节点与 SKILL 规则一一对应。
+  </p>
+  <div class="flow-wrap">
+    <svg viewBox="0 0 960 740" role="img" aria-label="执行循环详图">
+      <defs>
+        <marker id="ar3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+        <style>
+          .lb{font:600 14px sans-serif;fill:#1f2933;text-anchor:middle}
+          .sb{font:11.5px sans-serif;fill:#64748b;text-anchor:middle}
+          .al{font:11px sans-serif;fill:#475569;text-anchor:middle}
+        </style>
+      </defs>
+
+      <!-- 规划 -->
+      <g class="node">
+        <rect x="380" y="30" width="200" height="54" rx="12" fill="#ede9fe" stroke="#c4b5fd"/>
+        <text class="lb" x="480" y="52">📋 规划</text>
+        <text class="sb" x="480" y="70">PLAN.md 阶段/下一步</text>
+      </g>
+
+      <!-- 执行 (hub) -->
+      <g class="node">
+        <rect x="380" y="300" width="200" height="66" rx="14" fill="#faf5ff" stroke="#8b5cf6" stroke-width="2"/>
+        <text class="lb" x="480" y="328" fill="#7c3aed">⚙️ 执行</text>
+        <text class="sb" x="480" y="348">实际动作（单步）</text>
+      </g>
+
+      <!-- 问题、解决 -->
+      <g class="node">
+        <rect x="700" y="170" width="220" height="66" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+        <text class="lb" x="810" y="198">🔧 问题、解决</text>
+        <text class="sb" x="810" y="218">错误记录表 / 验证结果</text>
+      </g>
+
+      <!-- 撤销 -->
+      <g class="node">
+        <rect x="700" y="330" width="200" height="56" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+        <text class="lb" x="800" y="354" fill="#b91c1c">↩️ 撤销 / 回滚</text>
+        <text class="sb" x="800" y="372">修改安全·有回滚路径</text>
+      </g>
+
+      <!-- 规则 → 更新 Agents.md -->
+      <g class="node">
+        <rect x="700" y="480" width="240" height="70" rx="12" fill="#ecfdf5" stroke="#10b981"/>
+        <text class="lb" x="820" y="506" fill="#047857">📐 规则沉淀</text>
+        <text class="lb" x="820" y="526" fill="#047857">→ 更新 Agents.md</text>
+        <text class="sb" x="820" y="544">纪律 #8 活规则库写回</text>
+      </g>
+
+      <!-- 修改 PRD/Plan -->
+      <g class="node">
+        <rect x="40" y="300" width="230" height="66" rx="12" fill="#eff6ff" stroke="#3b82f6"/>
+        <text class="lb" x="155" y="328" fill="#1d4ed8">✏️ 修改</text>
+        <text class="sb" x="155" y="348">PRD/Plan 回写·变更同步</text>
+      </g>
+
+      <!-- 阶段门禁 Gate -->
+      <g class="node" onclick="scrollTo('discipline')">
+        <rect x="380" y="470" width="200" height="56" rx="12" fill="#f0fdf4" stroke="#10b981"/>
+        <text class="lb" x="480" y="494" fill="#047857">🚪 阶段门禁 Gate</text>
+        <text class="sb" x="480" y="512">验收有证据才放行</text>
+      </g>
+
+      <!-- 待施任务 -->
+      <g class="node">
+        <rect x="380" y="630" width="200" height="56" rx="12" fill="#fefce8" stroke="#facc15"/>
+        <text class="lb" x="480" y="654" fill="#a16207">📥 待施任务</text>
+        <text class="sb" x="480" y="672">任务队列·下一步单动作</text>
+      </g>
+
+      <!-- 参考示例 -->
+      <g class="node">
+        <rect x="40" y="480" width="200" height="56" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text class="lb" x="140" y="504" fill="#475569">📚 参考示例</text>
+        <text class="sb" x="140" y="522">templates / 历史经验</text>
+      </g>
+
+      <!-- 箭头 -->
+      <g fill="none" stroke="#64748b" marker-end="url(#ar3)">
+        <!-- 规划→执行 -->
+        <path d="M480,84 V300"/>
+        <!-- 执行→问题 -->
+        <path d="M580,333 H700"/><text class="al" x="640" y="324">遇到问题</text>
+        <!-- 问题→撤销 -->
+        <path d="M780,236 V330"/><text class="al" x="700" y="290">失败/不安全</text>
+        <!-- 撤销→执行 -->
+        <path d="M700,358 C650,358 620,348 580,344"/>
+        <!-- 问题→规则(右外绕) -->
+        <path d="M920,210 C936,360 900,452 850,480"/><text class="al" x="940" y="350">沉淀经验</text>
+        <!-- 规则→执行 -->
+        <path d="M700,515 C640,468 600,408 580,362"/><text class="al" x="620" y="450">规则生效</text>
+        <!-- 执行→修改 -->
+        <path d="M380,333 H270"/><text class="al" x="325" y="324">方案调整</text>
+        <!-- 修改→规划(回写重规划) -->
+        <path d="M155,300 C100,200 200,118 380,84"/><text class="al" x="150" y="200">变更同步→重规划</text>
+        <!-- 执行→门禁→待施任务 -->
+        <path d="M480,366 V470"/><path d="M480,526 V630"/><text class="al" x="492" y="440">阶段完成→过门禁</text><text class="al" x="492" y="600">取下一任务</text>
+        <!-- 待施任务→执行 -->
+        <path d="M380,658 C280,600 320,420 380,370"/><text class="al" x="300" y="520">pop next</text>
+        <!-- 参考→执行 -->
+        <path d="M240,498 C320,448 348,392 380,368"/><text class="al" x="270" y="440">参考</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--purple)"></i>执行 hub</span>
+      <span><i class="dot" style="background:var(--amber)"></i>问题、解决</span>
+      <span><i class="dot" style="background:var(--red)"></i>撤销 / 回滚</span>
+      <span><i class="dot" style="background:var(--green)"></i>规则写回 Agents.md</span>
+      <span><i class="dot" style="background:var(--blue)"></i>修改 PRD/Plan</span>
+      <span><i class="dot" style="background:#facc15"></i>待施任务</span>
+    </div>
+  </div>
+
+  <h3>节点与 SKILL 规则对应</h3>
+  <table>
+    <thead><tr><th>回路节点</th><th>对应规则 / 落点</th></tr></thead>
+    <tbody>
+      <tr><td>📋 规划</td><td>PLAN.md 的「下一步」单动作字段（纪律 #5）；复杂度分级决定粒度</td></tr>
+      <tr><td>⚙️ 执行</td><td>每完成一个动作即更新 PLAN 状态 + 追加 progress（纪律 #3/#4）</td></tr>
+      <tr><td>🔧 问题、解决</td><td>PLAN.md「错误记录表」「验证结果表」记录踩坑与解法</td></tr>
+      <tr><td>↩️ 撤销 / 回滚</td><td>「修改安全」纪律：原文件已备份、有回滚路径；安全审计阶段把关</td></tr>
+      <tr><td>📐 规则沉淀 → 更新 Agents.md</td><td>纪律 #8：执行中把沉淀出的约定/踩坑/约束持续写回 AGENTS.md（活规则库）</td></tr>
+      <tr><td>✏️ 修改 PRD/Plan</td><td>变更同步规则 §⑥：方案调整须回写 PRD/PLAN 并联动 progress</td></tr>
+      <tr><td>📥 待施任务</td><td>PLAN 阶段清单 + 「下一步」单动作；完成一个取下一个</td></tr>
+      <tr><td>🚪 阶段门禁 Gate</td><td>references/review-gates.md：每阶段/产物须有验收证据才标记完成，默认不通过</td></tr>
+      <tr><td>📚 参考示例</td><td>templates/ 四件套骨架与历史项目的 AGENTS/PRD/PLAN 经验</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== ⑧ 关键纪律 ========== -->
+<section id="discipline">
+  <h2>⑧ 关键纪律（贯穿全程）</h2>
+  <table>
+    <thead><tr><th>#</th><th>纪律</th><th>要点</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>AGENTS.md 非破坏性</td><td>根已存在则跳过，绝不静默覆盖</td></tr>
+      <tr><td>2</td><td>开工先读上下文</td><td>跟踪模式：先读 AGENTS → PLAN → progress，从断点继续；项目根未确认前禁读任何项目文件（先确认再读）</td></tr>
+      <tr><td>3</td><td>每轮必追加 progress</td><td>每个动作/阶段后追加一条；纯问答也补「无动作」</td></tr>
+      <tr><td>4</td><td>状态禁造假</td><td>PLAN 完成态必须真实，没做完不能标完成</td></tr>
+      <tr><td>5</td><td>下一步只填一个动作</td><td>PLAN 的「下一步」永远只有一个待执行动作</td></tr>
+      <tr><td>6</td><td>最后更新必刷新</td><td>PLAN 每次变更更新「最后更新」时间戳</td></tr>
+      <tr><td>7</td><td>变更必同步</td><td>PRD/PLAN/progress 任一处变，联动另两端</td></tr>
+      <tr><td>8</td><td>AGENTS.md 是活规则库</td><td>执行中持续写回；优先追加、不删用户规则、改完补变更记录</td></tr>
+      <tr><td>9</td><td><code>.plan/</code> 只放四件套</td><td>代码/产物/临时文件进项目其他目录，不塞进 .plan/</td></tr>
+      <tr><td>10</td><td>收工约定</td><td>PLAN 置完成、末条 progress 标 <code>[状态: 收工]</code>；.plan/ 可保留或归档</td></tr>
+      <tr><td>11</td><td>交接必填上下文</td><td>暂停/换人前，progress 的交接上下文必须完整</td></tr>
+      <tr><td>12</td><td>提交守纪律</td><td>见 references/commit-discipline.md：原子提交、约定式、不强制推共享分支、合并前 rebase</td></tr>
+      <tr><td>13</td><td>验收默认不通过</td><td>见 references/review-gates.md：产物/阶段须有证据才算过，首版允许 2–3 轮修订</td></tr>
+      <tr><td>14</td><td>AGENTS.md 渐进式披露</td><td>规则跨多主题(≥5)或过长(>~120行)拆 <code>AGENTS.d/&lt;topic&gt;.md</code>，AGENTS.md 留索引；按需加载、写回对应子文件</td></tr>
+      <tr><td>15</td><td>补录必溯源</td><td>补录内容标注信息源（磁盘证据/agent 已知/待确认）；progress 不伪造历史；禁写"应该/大概"</td></tr>
+      <tr><td>16</td><td>哨兵门禁</td><td>创建/补录建档后必过独立只读子 agent 核验；未达标补齐复检；自查自评不算数</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+
+<footer>project-plan skill · 执行链路图 · 由 SKILL.md v2.5.0 规则绘制 · 自包含 HTML，离线可用</footer>
+
+<script>
+  function scrollTo(id){
+    var el = document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+</script>
+</body>
+</html>

@@ -72,7 +72,7 @@
 <body>
 <header>
   <h1>project-plan · 执行链路图</h1>
-  <p>单一规划 skill 的规则执行流程 — 依据 SKILL.md v2.5.0 绘制 · 点击图中节点可跳转对应说明</p>
+  <p>单一规划 skill 的规则执行流程 — 依据 SKILL.md v2.6.0 绘制 · 点击图中节点可跳转对应说明</p>
 </header>
 
 <nav>
@@ -291,7 +291,8 @@
         <li>项目根放 <code>AGENTS.md</code> — <b>仅当根不存在时创建</b>；已存在则跳过并报告路径，<b>绝不覆盖</b>。</li>
         <li>根下建 <code>.plan/</code>，放入 <code>PRD.md / PLAN.md / progress.md</code>（从 templates 复制骨架）。</li>
         <li>与用户确认需求后填 PRD（背景/目标/需求/验收）。</li>
-        <li>填 PLAN（阶段/步骤/决策/验证/风险），并跑一次「预执行自检清单」。</li>
+        <li>📐 <b>文件布局规划</b>（详见 file-layout.md）：动手前想清目录分布与产物落点，按复杂度弹性（S 一句话 / M 列核心 / L·XL 完整表）；B 层快照进 PLAN、随结构演化刷新，布局是镜子不是笼子。</li>
+        <li>填 PLAN（阶段/步骤/决策/验证/风险 + 文件布局段），并跑一次「预执行自检清单」。</li>
         <li>填 progress 的元信息 + 上下文压缩。</li>
         <li>展示计划，<b>用户确认后再执行</b>。</li>
       </ol>
@@ -595,13 +596,14 @@
       <tr><td>14</td><td>AGENTS.md 渐进式披露</td><td>规则跨多主题(≥5)或过长(>~120行)拆 <code>AGENTS.d/&lt;topic&gt;.md</code>，AGENTS.md 留索引；按需加载、写回对应子文件</td></tr>
       <tr><td>15</td><td>补录必溯源</td><td>补录内容标注信息源（磁盘证据/agent 已知/待确认）；progress 不伪造历史；禁写"应该/大概"</td></tr>
       <tr><td>16</td><td>哨兵门禁</td><td>创建/补录建档后必过独立只读子 agent 核验；未达标补齐复检；自查自评不算数</td></tr>
+      <tr><td>17</td><td>布局是镜子不是笼子</td><td>文件布局分 A 层稳定规则(进 AGENTS.md)与 B 层可变快照(进 PLAN 架构段，大型项目可 AGENTS.d/layout.md)；B 层随结构演化正常刷新，更新快照不算破规则；须镜像现实(对标红线#4)</td></tr>
     </tbody>
   </table>
 </section>
 
 </main>
 
-<footer>project-plan skill · 执行链路图 · 由 SKILL.md v2.5.0 规则绘制 · 自包含 HTML，离线可用</footer>
+<footer>project-plan skill · 执行链路图 · 由 SKILL.md v2.6.0 规则绘制 · 自包含 HTML，离线可用</footer>
 
 <script>
   function scrollTo(id){

@@ -1,6 +1,6 @@
 # project-plan-z · README
 
-> 版本 v2.5.2（2026-10-28）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
+> 版本 v2.6.0（2026-10-28）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
 
 **单一规划 skill。** 需求确定后，为工作项目建立一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 
@@ -21,6 +21,7 @@
 - **阶段门禁与审核精神**：验收默认不通过、须有证据；提交类守原子 / 约定式纪律。
 - **非破坏性脚手架**：`scaffold.py` 只补缺失文件，已存在绝不覆盖；运营型可单向升级为交付型。
 - **渐进式披露**：SKILL.md 只放地图与红线，详细规则按需从 `references/` 加载；项目自身 `AGENTS.md` 规则过多时同样拆 `AGENTS.d/` 子文件、按需加载。
+- **文件布局规划（v2.6.0 新增）**：动手前想清目录分布与产物落点，且随项目结构演化持续刷新；规则与可变快照分离（A 层稳定规则进 AGENTS.md、B 层当前结构进 PLAN 架构段），布局是镜子不是笼子，更新快照不算破规则。
 
 ### 何时用 / 何时不用
 - **用**：新项目起手、有产品意图、需沉淀项目规则、可能中断或换人接手的任务。
@@ -37,6 +38,7 @@ project-plan-z/
 │   └── EXECUTION_FLOW.html  # 执行链路图（可视版，原样保留）
 ├── references/           # 按需加载的详细规则
 │   ├── generate-files.md     # 建档规则 + 合格标准
+│   ├── file-layout.md       # 文件布局规划（规则与可变快照分离、弹性强度、变更刷新）
 │   ├── plan-structuring.md   # 复杂度 + 自检 + 生命周期
 │   ├── runtime-loop.md       # 执行循环 10 步
 │   ├── change-sync.md        # PRD/PLAN/progress 变更同步
@@ -68,7 +70,8 @@ flowchart TD
     F2 --> G
     G -- 交付型 delivery --> H[建四件套<br/>AGENTS+PRD+PLAN+progress]
     G -- 运营型 operation --> I[仅 AGENTS.md + progress.md]
-    H --> S1{🛡️ 哨兵核验<br/>建档合格?}
+    H --> L0[📐 布局规划(弹性): 目录分布+产物落点<br/>B层快照·随演化刷新]
+    L0 --> S1{🛡️ 哨兵核验<br/>建档合格?}
     I --> S1
     S1 -- 未达标 --> S2[按清单补齐 → 复检]
     S2 --> S1
@@ -189,7 +192,7 @@ flowchart TD
 
 ---
 
-## 8. 关键纪律（红线 16 条，常驻上下文）
+## 8. 关键纪律（红线 17 条，常驻上下文）
 
 1. **AGENTS.md 非破坏性**：根已存在则跳过，绝不静默覆盖。
 2. **开工先读上下文**：跟踪模式下先读 AGENTS →（交付型续读 PLAN）→ progress。
@@ -207,6 +210,7 @@ flowchart TD
 14. **AGENTS.md 渐进式披露**：规则跨多主题或 AGENTS.md 过长（>~120 行 / ≥5 主题）时拆 `AGENTS.d/<topic>.md` 子文件，AGENTS.md 仅留索引；按任务相关主题按需加载，不整篇读入，写回追加到对应主题子文件。
 15. **补录必溯源**：补录的每处内容标注信息源（磁盘证据 / agent 已知 / 待确认），progress 不伪造历史流水，禁写"应该 / 大概"。
 16. **哨兵门禁**：创建 / 补录建档后必过独立只读子 agent 核验，未达标补齐复检，通过才算建档完成；自查自评不算数。
+17. **布局是镜子不是笼子**：文件布局分 A 层稳定规则（命名 / 禁随手建临时文件 / 新产物先登记再创建，进 AGENTS.md）与 B 层可变快照（当前结构，进 PLAN 架构段，大型项目可 `AGENTS.d/layout.md`）；B 层随结构演化正常刷新，更新快照不算破规则；布局须镜像现实（对标红线 #4，禁造假），结构变了先改布局再放产物。
 
 ---
 
@@ -220,6 +224,7 @@ flowchart TD
 
 ## 版本历史
 
+- **v2.6.0**（2026-10-28）：新增 `references/file-layout.md`（文件布局规划）——解决「布局写死会与项目演化矛盾」的破坏性冲突。核心：规则与可变快照分离（A 层稳定规则进 AGENTS.md / B 层当前结构进 PLAN 架构段，mirror-not-law）；按复杂度弹性（S 一句话 / M 列核心 / L·XL 完整表）；演化中刷新属正常循环动作（runtime-loop 步骤 8 结构变更即刷 PLAN 布局段）；哨兵校验延伸「实际目录树 ≈ 文档布局」；红线 #17。PLAN/AGENTS 模板同步加「文件布局」段与稳定约定升级；补录模式侦察兵增加「反向推导布局 + 标注散乱」。
 - **v2.5.2**（2026-10-28）：新增可选说明文件 `USAGE.md`（跨 agent 适配与使用诀窍，非强制加载，不进常驻上下文）——讲清各 agent 读取 AGENTS.md 的规则差异（重点 WorkBuddy 只自动读 workspace folder 那一层、子文件夹不读，需用前设好工作目录）与「怎么用才真正好用」的最佳实践；README 注明其与本文件分工，路由索引加「可选」指针。
 - **v2.5.1**（2026-10-27）：①哨兵/侦察兵增加无子 agent host 的降级路径（不跳过核验）②版本 changelog 移出 SKILL.md（本节承接）③跟踪模式入口硬判据：项目根未确认前禁读任何项目文件。
 - **v2.5.0**（2026-10-27）：①新增**补录模式**（在建项目反向建档：侦察兵子 agent 盘点磁盘证据 + 信息源三级分级 L1/L2/L3 + progress 首条「回溯建档」不伪造历史）②新增**哨兵子 agent** 核验门禁（红线 #15 补录必溯源 / #16 哨兵门禁）③回溯阶段判定（PLAN 按项目现实落词表，禁默认从①起步）④路由改三分支，README/流程图/测试集同步。

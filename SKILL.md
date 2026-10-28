@@ -7,7 +7,7 @@ description: "本技能应在以下场景使用：需求确定后，为工作项
 
 **单一规划 skill。** 需求确定后，工作项目里有一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 
-> **版本**：v2.5.2（2026-10-28）｜完整变更记录见 README.md「版本历史」（changelog 不占本文件上下文）
+> **版本**：v2.6.0（2026-10-28）｜完整变更记录见 README.md「版本历史」（changelog 不占本文件上下文）
 
 ## 何时用
 
@@ -76,6 +76,7 @@ description: "本技能应在以下场景使用：需求确定后，为工作项
 | 在建项目补档案（已开工缺档案） | `references/generate-files.md`（补录节）+ `references/plan-structuring.md`（回溯判定） | — |
 | 建档 / 补录完成后的质量核验 | `references/generate-files.md`（哨兵节） | — |
 | 规划定稿 / 动手前定粒度 | `references/plan-structuring.md`（复杂度 + 自检 + 生命周期） | — |
+| 动手前规划文件布局 / 结构演化刷新 | `references/file-layout.md`（规则与可变快照分离、弹性强度、变更刷新） | — |
 | 执行单个动作 / 阶段 | `references/runtime-loop.md` | — |
 | 用户要改需求 / 计划 | `references/change-sync.md` | — |
 | 写 / 更新 progress | `references/progress-spec.md` | — |
@@ -91,7 +92,7 @@ description: "本技能应在以下场景使用：需求确定后，为工作项
 
 ## 执行流程（简述）
 
-- **创建模式**：用 `scripts/scaffold.py <项目根> [--type delivery|operation] [--force-root-agents]` 一次性非破坏性生成对应文件集（默认 delivery 四件套；operation 仅 AGENTS.md+progress.md），或按 `references/generate-files.md` 手写。建档后展示文件集，用户确认再执行。`--force-root-agents` 是本规则**唯一**可显式覆盖「绝不静默覆盖」的开关（仅当确认要替换已有 AGENTS.md 时传）。
+- **创建模式**：用 `scripts/scaffold.py <项目根> [--type delivery|operation] [--force-root-agents]` 一次性非破坏性生成对应文件集（默认 delivery 四件套；operation 仅 AGENTS.md+progress.md），或按 `references/generate-files.md` 手写。建档后展示文件集，用户确认再执行。`--force-root-agents` 是本规则**唯一**可显式覆盖「绝不静默覆盖」的开关（仅当确认要替换已有 AGENTS.md 时传）。建档环节须包含**文件布局规划**：动手前想清目录分布与产物落点，且随项目结构演化持续刷新（详见 `references/file-layout.md`：规则与可变快照分离，不把布局当死规则）。
 - **补录模式**：项目已开工但没建档（或档案是空模板）——先派**侦察兵**子 agent 盘点磁盘证据，再反向撰写档案（信息源分级：磁盘证据 / agent 已知 / 待确认），progress 不伪造历史、首条写「回溯建档」（详见 `generate-files.md` 补录节）。
 - **跟踪模式**：读 `AGENTS.md` →（交付型续读 `PLAN.md`）→ `progress.md`，从断点继续（详见 `runtime-loop.md` 步骤 1-2）。
 - **哨兵核验**：创建 / 补录建档完成后，**必须**派独立只读子 agent 按各文件「合格标准」核验（结构齐全 / 状态真实 / 无编造），通过才算建档完成；自查自评无效（详见 `generate-files.md` 哨兵节）。复检最多 2 轮，仍未过→停手带清单交用户裁决；**S 级项目豁免哨兵**，对照合格标准自检即可；哨兵结论（PASS / 未达标清单）记入 progress 留痕；通过后再展示用户确认。host 无子 agent 能力时走哨兵节降级路径，不跳过核验。
@@ -115,6 +116,7 @@ description: "本技能应在以下场景使用：需求确定后，为工作项
 14. **AGENTS.md 渐进式披露**：项目规则跨多主题或 AGENTS.md 过长（>~120 行 / ≥5 主题）时，拆为 `AGENTS.d/<topic>.md` 子文件，AGENTS.md 仅留「项目目标 + 规则索引表 + 变更记录」薄入口；执行某任务时按需加载相关主题子文件（用到哪类规则加载哪份），不整篇读入；写回规则追加到对应主题子文件，不回写进索引（详见 `generate-files.md` 的 AGENTS.md 段）。
 15. **补录必溯源**：补录（在建项目反向建档）的每处内容标注信息源——磁盘证据（git log / 文件 / 文档）、agent 已知（标注「来自对话」）、待确认（推不出就标，不编造）；progress 不伪造历史流水，历史禁写"应该 / 大概"。
 16. **哨兵门禁**：创建 / 补录建档完成后必过独立只读子 agent 核验（对照合格标准查结构 / 状态真实性 / 编造项），通过才算建档完成；主 agent 自查自评不算数。复检最多 2 轮，仍未过停手交用户裁决；S 级项目豁免（对照合格标准自检）；结论记入 progress。
+17. **布局是镜子不是笼子**：文件布局（目录分布 / 产物落点）分 A 层稳定规则（命名约定、禁随手建临时文件、新产物先登记再创建，进 AGENTS.md）与 B 层可变快照（当前结构，进 PLAN 架构段，大型项目可 `AGENTS.d/layout.md`），分开管理；B 层随结构演化**正常刷新**，更新快照不算破规则；布局须镜像现实（对标红线 #4，禁造假），结构变了先改布局再放产物，不事后补理由。
 
 ## 安全
 

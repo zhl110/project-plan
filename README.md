@@ -1,6 +1,6 @@
 # project-plan-z · README
 
-> 版本 v2.6.0（2026-10-28）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
+> 版本 v2.6.1（2026-10-28）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
 
 **单一规划 skill。** 需求确定后，为工作项目建立一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 

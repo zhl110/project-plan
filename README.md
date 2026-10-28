@@ -4,6 +4,8 @@
 
 **单一规划 skill。** 需求确定后，为工作项目建立一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 
+![project-plan-z 主视觉横幅](assets/promo/banner-hero.png)
+
 > 本文件是 skill 的文字版说明（由 `assets/EXECUTION_FLOW.html` 流程图转写）。流程图保留原样，可视版请看该 HTML。
 
 > **还有一份可选的 `USAGE.md`（位于 skill 根）**，与本文件分工不同：本文件讲「skill 是什么 / 怎么走」（结构、流程、红线）；`USAGE.md` 讲「不同 agent / 不同工作区配置下怎么用才真正好用」——重点解决「为什么我的 AGENTS.md 没被遵守」这类落地问题（例如 WorkBuddy 只自动读 workspace folder 那一层 `AGENTS.md`、子文件夹不读，需用前设好工作目录）。**可选阅读，不强制加载**，不进 SKILL.md 常驻上下文，路由索引中作为「可选」项列出。
@@ -35,7 +37,8 @@ project-plan-z/
 ├── USAGE.md              # 可选：跨 agent 适配与使用诀窍（非强制加载）
 ├── assets/               # 脚手架模板（写入用户项目）
 │   ├── AGENTS.md  PRD.md  PLAN.md  progress.md
-│   └── EXECUTION_FLOW.html  # 执行链路图（可视版，原样保留）
+│   ├── EXECUTION_FLOW.html  # 执行链路图（可视版，原样保留）
+│   └── promo/             # 宣传图（AI 生图，无水印，见文末「视觉资产」）
 ├── references/           # 按需加载的详细规则
 │   ├── generate-files.md     # 建档规则 + 合格标准
 │   ├── file-layout.md       # 文件布局规划（规则与可变快照分离、弹性强度、变更刷新）
@@ -222,6 +225,22 @@ flowchart TD
 
 ---
 
+## 视觉资产（宣传图）
+
+> 全部由 AI 生图生成，画面**不带文字 / 无水印**（标题由本文件叠加），最终视觉核验以磁盘级为准。生成提示词与负向约束见对话记录。
+
+| 用途 | 文件 | 比例 |
+|------|------|------|
+| README 头图 / 横幅 | `assets/promo/banner-hero.png` | 3:1 超宽 |
+| 文档内嵌 / 宽幅配图 | `assets/promo/banner-wide.png` | ≈1.9:1 |
+| 技能卡片 / 社媒方图 | `assets/promo/card-a.png` | 3:2 |
+| 技能卡片 / 社媒方图 | `assets/promo/card-b.png` | 3:2 |
+| 备选封面（手作） | `assets/promo/IMG_20261028_205545.png` | 3:2 |
+
+![文档内嵌宽幅配图](assets/promo/banner-wide.png)
+
+---
+
 ## 版本历史
 
 - **v2.6.1**（2026-10-28）：使用者视角挑错修复（以实际使用者身份逐条核验，消除文档与模板/脚本脱节）。① `assets/progress.md` 新增「下一步 / 待办」段并明确：运营型为循环取任务唯一真相源、交付型为 PLAN 镜像——消除 runtime-loop 反复引用「progress 下一步」却无字段的断裂；② 删除悬空概念「AGENTS 待办」，统一改为从 progress「下一步」取，并在 `file-layout.md` 明确「AGENTS 待办」实指 AGENTS.md 可选「待办 / 改进项」段（不阻断循环）；③ `scaffold.py` 增加「未填写空模板」识别：文件已存在但与模板逐字节相同则报「未填写的空模板，可走补录模式重填」，与「已自定义（受保护）」区分，使路由信号落地；④ 冒烟测试改为跨平台写法（`/tmp` 仅在类 Unix 用，Windows 用临时目录）；⑤ 统一 `change-sync.md` 与 `progress-spec.md` 对「变更日志」表列的定义（同一张表，不再两套列名）；⑥ 标注「哨兵复检 2 轮」与「阶段门禁 3 轮」是两套独立限制；⑦ README 复杂度分级 S 级描述对齐 `plan-structuring.md` 权威定义；⑧ 运营型建档步骤提示填写「下一步 / 待办」；⑨ `example-filled.md` 进度范例补「下一步 / 待办」段。
@@ -231,3 +250,5 @@ flowchart TD
 - **v2.5.0**（2026-10-27）：①新增**补录模式**（在建项目反向建档：侦察兵子 agent 盘点磁盘证据 + 信息源三级分级 L1/L2/L3 + progress 首条「回溯建档」不伪造历史）②新增**哨兵子 agent** 核验门禁（红线 #15 补录必溯源 / #16 哨兵门禁）③回溯阶段判定（PLAN 按项目现实落词表，禁默认从①起步）④路由改三分支，README/流程图/测试集同步。
 - **v2.4.x**（2026-10-27）：四件套合并（project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z）；吸收 agency-agents 五路专家（PRD 结构/风险登记册/提交纪律/审核门禁/交接结构）；AGENTS.md 渐进式披露（`AGENTS.d/` 拆分，红线 #14）；`--force-root-agents` 文档化、frontmatter name 对齐目录、非破坏性冒烟验证；使用者视角挑错 11 项全修（跟踪直连执行循环、哨兵复检 ≤2 轮、S 级豁免、空模板三判据等）。
 - DARWIN 独立评分轨迹：81.8（v2.4.1 基线）→ 90.5（v2.5.0），记录于 darwin-skill-z/results.tsv。
+
+- **v2.6.1 补充（2026-10-28 晚）**：新增 `assets/promo/` 宣传图集——README 顶部加主视觉横幅 `banner-hero.png`、文末加「视觉资产」清单（4 张 AI 生图无水印 + 1 张手作备选封面）；删除旧版自生成图。命名按用途槽位（`banner-hero` / `banner-wide` / `card-a` / `card-b`）。

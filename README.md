@@ -1,10 +1,12 @@
 # project-plan-z · README
 
-> 版本 v2.5.1（2026-10-27）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
+> 版本 v2.5.2（2026-10-28）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
 
 **单一规划 skill。** 需求确定后，为工作项目建立一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 
 > 本文件是 skill 的文字版说明（由 `assets/EXECUTION_FLOW.html` 流程图转写）。流程图保留原样，可视版请看该 HTML。
+
+> **还有一份可选的 `USAGE.md`（位于 skill 根）**，与本文件分工不同：本文件讲「skill 是什么 / 怎么走」（结构、流程、红线）；`USAGE.md` 讲「不同 agent / 不同工作区配置下怎么用才真正好用」——重点解决「为什么我的 AGENTS.md 没被遵守」这类落地问题（例如 WorkBuddy 只自动读 workspace folder 那一层 `AGENTS.md`、子文件夹不读，需用前设好工作目录）。**可选阅读，不强制加载**，不进 SKILL.md 常驻上下文，路由索引中作为「可选」项列出。
 
 ---
 
@@ -28,7 +30,8 @@
 ```
 project-plan-z/
 ├── SKILL.md              # 地图 + 路由 + 红线纪律（常驻上下文）
-├── README.md             # 本文件（文字版说明）
+├── README.md             # 文字版说明（结构 / 流程 / 红线，由流程图转写）
+├── USAGE.md              # 可选：跨 agent 适配与使用诀窍（非强制加载）
 ├── assets/               # 脚手架模板（写入用户项目）
 │   ├── AGENTS.md  PRD.md  PLAN.md  progress.md
 │   └── EXECUTION_FLOW.html  # 执行链路图（可视版，原样保留）
@@ -217,6 +220,7 @@ flowchart TD
 
 ## 版本历史
 
+- **v2.5.2**（2026-10-28）：新增可选说明文件 `USAGE.md`（跨 agent 适配与使用诀窍，非强制加载，不进常驻上下文）——讲清各 agent 读取 AGENTS.md 的规则差异（重点 WorkBuddy 只自动读 workspace folder 那一层、子文件夹不读，需用前设好工作目录）与「怎么用才真正好用」的最佳实践；README 注明其与本文件分工，路由索引加「可选」指针。
 - **v2.5.1**（2026-10-27）：①哨兵/侦察兵增加无子 agent host 的降级路径（不跳过核验）②版本 changelog 移出 SKILL.md（本节承接）③跟踪模式入口硬判据：项目根未确认前禁读任何项目文件。
 - **v2.5.0**（2026-10-27）：①新增**补录模式**（在建项目反向建档：侦察兵子 agent 盘点磁盘证据 + 信息源三级分级 L1/L2/L3 + progress 首条「回溯建档」不伪造历史）②新增**哨兵子 agent** 核验门禁（红线 #15 补录必溯源 / #16 哨兵门禁）③回溯阶段判定（PLAN 按项目现实落词表，禁默认从①起步）④路由改三分支，README/流程图/测试集同步。
 - **v2.4.x**（2026-10-27）：四件套合并（project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z）；吸收 agency-agents 五路专家（PRD 结构/风险登记册/提交纪律/审核门禁/交接结构）；AGENTS.md 渐进式披露（`AGENTS.d/` 拆分，红线 #14）；`--force-root-agents` 文档化、frontmatter name 对齐目录、非破坏性冒烟验证；使用者视角挑错 11 项全修（跟踪直连执行循环、哨兵复检 ≤2 轮、S 级豁免、空模板三判据等）。

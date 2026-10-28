@@ -7,7 +7,7 @@ description: "本技能应在以下场景使用：需求确定后，为工作项
 
 **单一规划 skill。** 需求确定后，工作项目里有一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 
-> **版本**：v2.5.1（2026-10-27）｜完整变更记录见 README.md「版本历史」（changelog 不占本文件上下文）
+> **版本**：v2.5.2（2026-10-28）｜完整变更记录见 README.md「版本历史」（changelog 不占本文件上下文）
 
 ## 何时用
 
@@ -85,6 +85,7 @@ description: "本技能应在以下场景使用：需求确定后，为工作项
 | 项目规则过多需拆分 / 读写规则子文件 | `references/generate-files.md`（AGENTS.md 段）+ 项目 `AGENTS.d/` | — |
 | 看整体流程全景 | `assets/EXECUTION_FLOW.html`（不进上下文，给人看） | — |
 | 看文字版说明 | `README.md`（流程图转写，位于 skill 根） | — |
+| 了解跨 agent 适配与使用诀窍（可选，非强制加载） | `USAGE.md`（位于 skill 根，讲各 agent 读取规则差异与最佳实践） | — |
 
 > 图与规则互为镜像：总图与各 reference 的节点一一对应，不另立概念。
 

@@ -1,13 +1,13 @@
 ---
 name: project-plan-z
-description: "本技能应在以下场景使用：需求确定后，为工作项目建档（先按项目性质裁剪文件集：交付型四件套 / 运营型仅 AGENTS.md+progress.md）并进入受控的执行循环——AGENTS.md（项目规则，agent 与用户共同维护）、.plan/PRD.md（产品需求与验收）、.plan/PLAN.md（执行计划与阶段状态机）、.plan/progress.md（进度追踪与 Agent 交接）。覆盖复杂度分级、预执行自检、生命周期阶段模型、变更同步、进度与交接规范。适用：新项目起手、有产品意图、需沉淀规则、可能中断或换人接手的任务。不适用：一步到位的简单修改、纯问答、一次性脚本。建档前先评估项目性质决定生成哪些文件。触发词：规划一下、列个计划、做个 plan、起个项目、建档案、拆分任务、进度、交接、handoff、break down、项目结构。"
+description: "本技能应在以下场景使用：需求确定后，为工作项目建档（先按项目性质裁剪文件集：交付型四件套 / 运营型仅 AGENTS.md+progress.md）并进入受控的执行循环——AGENTS.md（项目规则，agent 与用户共同维护）、.plan/PRD.md（产品需求与验收）、.plan/PLAN.md（执行计划与阶段状态机）、.plan/progress.md（进度追踪与 Agent 交接）。覆盖复杂度分级、预执行自检、生命周期阶段模型、变更同步、进度与交接规范。适用：新项目起手、有产品意图、需沉淀规则、可能中断或换人接手的任务。不适用：一步到位的简单修改、纯问答、一次性脚本。建档前先评估项目性质决定生成哪些文件。触发词：规划一下、列个计划、做个 plan、起个项目、建档案、拆分任务、进度、交接、handoff、break down、项目结构、补录、补建、半路项目、续接项目、补全规划、项目文档化、scaffold、set up project、project scaffolding、organize project files、mid-project、document the project、resume project。"
 ---
 
 # 项目规划与执行套件
 
 **单一规划 skill。** 需求确定后，工作项目里有一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 
-> **版本**：v2.6.1（2026-10-28）｜完整变更记录见 README.md「版本历史」（changelog 不占本文件上下文）
+> **版本**：v2.6.2（2026-10-29）｜完整变更记录见 README.md「版本历史」（changelog 不占本文件上下文）
 
 ## 何时用
 

@@ -1,6 +1,6 @@
 # project-plan-z · README
 
-> 版本 v2.6.2（2026-10-29）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
+> 版本 v2.6.3（2026-11-01）｜合并自 project-plan-z + task-progress-z + plan-review-z + full-project-lifecycle-z｜并吸收 agency-agents 专家方法论（product-manager / project-shepherd / git-workflow-master / reality-checker+evidence-collector / handoff-templates）。完整变更记录见文末「版本历史」。
 
 **单一规划 skill。** 需求确定后，为工作项目建立一套可读可控的档案，靠简单纪律保持进度可见、上下文可交接。不依赖任何 host 专属 hook，换任何支持 skill 的 host 都能用。
 
@@ -251,6 +251,7 @@ flowchart TD
 
 ## 版本历史
 
+- **v2.6.3**（2026-11-01）：哨兵质量门禁提速（治本，不降主干质量）。① 判据强制内联——派哨兵时必须把各文件「合格标准」条目（AGENTS①–⑤ / PRD①–⑦ / PLAN①–⑩ / progress①–⑥）整段复制进提示词，**严禁**"指路自读 `generate-files.md`"（消除子 agent 先啃 197 行规则书再干活的磨蹭）；② 磁盘核对限范围——git log 仅最近 20 条、交付物仅顶层目录、L1 抽查 ≤2 条仅验文件名存在性、目录树仅顶层 2 层，砍掉"翻遍仓库"耗时；③ 结论改固定短模板（`结论：PASS` / `结论：未达标｜文件+第几条+应补什么`），禁散文式报告。明确范围限定只放过极低频的"深层/古老磁盘错位"，跨文件一致性、必填项、红线全保留；L/XL 大项目可放开深扫开关。根因：实测单哨兵审查卡 10 分钟未结束，慢在"自读大文件 + 全量扫磁盘 + 写长报告"三处而非审文件本身。
 - **v2.6.2**（2026-10-29）：触发率增强。实测 16 正例 + 7 负例子串/语义双判：中文 prompt 覆盖全、0 误触发；但有 2 例真漏触发（「项目做到一半补建规划档案」「把做到一半项目续接补全规划」——补录模式是旗舰功能却无触发词），且英文 host 场景仅靠 `plan/handoff/break down` 三词、覆盖率低。改进 `SKILL.md` frontmatter `description` 触发词段：补中文「补录 / 补建 / 半路项目 / 续接项目 / 补全规划 / 项目文档化 / scaffold」、补英文「set up project / project scaffolding / organize project files / mid-project / document the project / resume project」；同步升版本戳。DARWIN 评分维持 93.0（本次仅文本扩展，未动机制）。
 - **v2.6.1**（2026-10-28）：使用者视角挑错修复（以实际使用者身份逐条核验，消除文档与模板/脚本脱节）。① `assets/progress.md` 新增「下一步 / 待办」段并明确：运营型为循环取任务唯一真相源、交付型为 PLAN 镜像——消除 runtime-loop 反复引用「progress 下一步」却无字段的断裂；② 删除悬空概念「AGENTS 待办」，统一改为从 progress「下一步」取，并在 `file-layout.md` 明确「AGENTS 待办」实指 AGENTS.md 可选「待办 / 改进项」段（不阻断循环）；③ `scaffold.py` 增加「未填写空模板」识别：文件已存在但与模板逐字节相同则报「未填写的空模板，可走补录模式重填」，与「已自定义（受保护）」区分，使路由信号落地；④ 冒烟测试改为跨平台写法（`/tmp` 仅在类 Unix 用，Windows 用临时目录）；⑤ 统一 `change-sync.md` 与 `progress-spec.md` 对「变更日志」表列的定义（同一张表，不再两套列名）；⑥ 标注「哨兵复检 2 轮」与「阶段门禁 3 轮」是两套独立限制；⑦ README 复杂度分级 S 级描述对齐 `plan-structuring.md` 权威定义；⑧ 运营型建档步骤提示填写「下一步 / 待办」；⑨ `example-filled.md` 进度范例补「下一步 / 待办」段。
 - **v2.6.0**（2026-10-28）：新增 `references/file-layout.md`（文件布局规划）——解决「布局写死会与项目演化矛盾」的破坏性冲突。核心：规则与可变快照分离（A 层稳定规则进 AGENTS.md / B 层当前结构进 PLAN 架构段，mirror-not-law）；按复杂度弹性（S 一句话 / M 列核心 / L·XL 完整表）；演化中刷新属正常循环动作（runtime-loop 步骤 8 结构变更即刷 PLAN 布局段）；哨兵校验延伸「实际目录树 ≈ 文档布局」；红线 #17。PLAN/AGENTS 模板同步加「文件布局」段与稳定约定升级；补录模式侦察兵增加「反向推导布局 + 标注散乱」。
